@@ -4,7 +4,7 @@
 
 
 from datetime import datetime
-import uuid
+from uuid import uuid4
 
 
 class BaseModel():
@@ -18,9 +18,17 @@ class BaseModel():
                 *args : argument gives
                 **kwargs:  Key/Value of dict attributs
         """
-        self.id = str(uuid.uuid4())
+        self.id = str(uuid4())
         self.updated_at = datetime.today()
         self.created_at = datetime.today()
+        if len(kwargs) > 0:
+            for key, value in kwargs.items():
+                if key == "updated_at" or key == "created_at":
+                    self.__dict__[key] = datetime.strptime("%Y-%m-%dT%H:%M:%S.%f")
+
+                elif key != "__class__":
+                    self.__dict__[key] = value
+
 
     def save(self):
         """updated_at: updates the public instance attribute updated_at with the current datetime
@@ -37,7 +45,7 @@ class BaseModel():
         Returns:
             should print: [<class name>] (<self.id>) <self.__dict__>
         """
-        return f"[{self.__class__.__name__}] {self.id} {self.__dict__}"
+        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
 
     def to_dict(self):
         """

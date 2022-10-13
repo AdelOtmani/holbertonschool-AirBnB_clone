@@ -5,6 +5,7 @@
 
 from datetime import datetime
 from uuid import uuid4
+import models
 
 
 class BaseModel():
@@ -28,6 +29,8 @@ class BaseModel():
 
                 elif key != "__class__":
                     self.__dict__[key] = value
+        else:
+            models.storage.new(self)
 
 
     def save(self):
@@ -38,6 +41,7 @@ class BaseModel():
 
         """
         self.updated_at = datetime.today()
+        models.storage.save()
 
     def __str__(self):
         """return str

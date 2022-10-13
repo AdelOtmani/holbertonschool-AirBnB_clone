@@ -14,8 +14,9 @@ class HBNBCommand(cmd.Cmd):
         print()
         return True
 
-    def do_emptyline(self):
-        """empty line"""
+    def emptyline(self):
+        """"""
+        pass
 
     def do_quit(self, line):
         """Quit command to exit the program

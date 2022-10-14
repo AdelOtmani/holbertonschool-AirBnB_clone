@@ -28,9 +28,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """"""
-        if arg is None:
+        if len(arg) <= 0:
             print("** class name missing **")
-            return False
         try:
             model_class = getattr(sys.modules[__name__], arg)
         except Exception:

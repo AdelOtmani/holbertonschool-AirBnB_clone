@@ -5,6 +5,7 @@ import cmd
 import json
 import sys
 from models import *
+from models.user import User
 
 class HBNBCommand(cmd.Cmd):
     """Console initialisation Hbnb

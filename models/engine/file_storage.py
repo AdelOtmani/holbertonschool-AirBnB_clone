@@ -5,6 +5,7 @@
 
 import json
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage():
@@ -24,7 +25,7 @@ class FileStorage():
         for keyK in self.__objects:
             obj_json[keyK] = self.__objects[keyK].to_dict()
         with open(FileStorage.__file_path, 'w') as My_file:
-            json.dump(obj_json, My_file)
+            json.dump(obj_json, My_file, indent=2)
 
     def reload(self):
         try:

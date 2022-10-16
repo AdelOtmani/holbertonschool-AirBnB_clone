@@ -61,7 +61,7 @@ class TestsBaseModel(unittest.TestCase):
         self.assertEqual(type(self.obj.price_by_night), int)
         self.assertEqual(type(self.obj.latitude), float)
         self.assertEqual(type(self.obj.longitude), float)
-        self.assertEqual(type(self.obj.amenity_ids), list)
+        self.assertEqual(type(self.obj.amenity_ids), str)
 
 if __name__ == "__main__":
     unittest.main()

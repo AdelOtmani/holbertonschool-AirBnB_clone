@@ -5,12 +5,14 @@ import cmd
 import json
 import sys
 from models import *
+import models
 from models.user import User
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+
 class HBNBCommand(cmd.Cmd):
     """Console initialisation Hbnb
     """
@@ -37,37 +39,31 @@ class HBNBCommand(cmd.Cmd):
         """"""
         if len(arg) <= 0:
             print("** class name missing **")
-        try:
-            model_class = getattr(sys.modules[__name__], arg)
-        except Exception:
-            print("** class doesn't exist **")
-            return False
-
-        obj = model_class()
-        obj.save()
-        print(obj.id)
+        else:
+            try:
+                line_arg = arg.split()
+                new_Create = eval(line_arg[0])()
+                new_Create.save()
+                print(new_Create.id)
+            except Exception:
+                print("** class doesn't exist **")
 
     def do_show(self, line):
         """ Prints the string representation of an instance based on the class name and id"""
 
         args = line.split()
-
-        try:
-            model_class = getattr(sys.modules[__name__], args[0])
-            objs = storage.all()
-            obj = objs.get('.'.join(args), None)
-            if (obj is None or len(args) <= 2):
-                raise
-            print(obj)
-        except Exception:
-            if len(args) == 0:
+        if len(args) == 0:
                 print("** class name missing **")
-            elif args[0] not in HBNBCommand.name_class:
-                print("** class doesn't exist **")
-            elif len(args) == 1:
-                print("** instance id missing **")
-            elif obj is None:
-                print("** no instance found **")
+        elif args[0] not in HBNBCommand.name_class:
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        elif "{}.{}".format(
+                args[0], args[1]) not in models.storage.all().keys():
+            print("** no instance found **")
+        else:
+            print(models.storage.all()["{}.{}".format(
+                args[0], args[1])])
 
 
     def do_destroy(self, line):

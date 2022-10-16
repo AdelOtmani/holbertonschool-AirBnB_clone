@@ -10,6 +10,8 @@ class HBNBCommand(cmd.Cmd):
     """Console initialisation Hbnb
     """
     prompt = '(hbnb)'
+    name_class = [
+        "BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]
 
     def do_EOF(self, line):
         """End Of File
@@ -42,23 +44,26 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, line):
         """ Prints the string representation of an instance based on the class name and id"""
-        if line is None:
-            print("** class name missing **")
+
         args = line.split()
+
         try:
             model_class = getattr(sys.modules[__name__], args[0])
-        except Exception:
-            print("** class doesn't exist **")
-            return False
-        if len(args) < 2:
-            print("** instance id missing **")
-            return False
-        objs = storage.all()
-        obj = objs.get('.'.join(args), None)
-        if obj is None:
-            print("** no instance found **")
-        else:
+            objs = storage.all()
+            obj = objs.get('.'.join(args), None)
+            if (obj is None or len(args) <= 2):
+                raise
             print(obj)
+        except Exception:
+            if len(args) == 0:
+                print("** class name missing **")
+            elif args[0] not in HBNBCommand.name_class:
+                print("** class doesn't exist **")
+            elif len(args) == 1:
+                print("** instance id missing **")
+            elif obj is None:
+                print("** no instance found **")
+
 
     def do_destroy(self, line):
         """_summary_
